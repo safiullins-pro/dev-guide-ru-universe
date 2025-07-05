@@ -46,25 +46,32 @@ interface ToolCardProps {
   freeTier?: string;
 }
 
-const ToolCard: React.FC<ToolCardProps> = ({ 
-  title, 
-  description, 
-  image, 
-  pros, 
-  cons, 
-  useCase, 
-  link, 
-  freeTier 
-}) => {
-  return (
-    <Card className="overflow-hidden border-border bg-card/50 backdrop-blur-sm hover:shadow-lg transition-all duration-300 hover:scale-[1.02]">
-      <div className="aspect-video overflow-hidden">
-        <img 
-          src={image} 
-          alt={title} 
-          className="w-full h-full object-cover transition-transform duration-300 hover:scale-105" 
-        />
-      </div>
+  const ToolCard: React.FC<ToolCardProps> = ({ 
+    title, 
+    description, 
+    image, 
+    pros, 
+    cons, 
+    useCase, 
+    link, 
+    freeTier 
+  }) => {
+    return (
+      <Card className="overflow-hidden border-border bg-card/50 backdrop-blur-sm hover:shadow-lg transition-all duration-300 hover:scale-[1.02]">
+        <div className="aspect-video overflow-hidden bg-gradient-to-br from-primary/10 to-secondary/20 flex items-center justify-center relative">
+          <div className="text-center p-6">
+            <div className="w-16 h-16 mx-auto mb-4 bg-primary/20 rounded-2xl flex items-center justify-center">
+              <span className="text-2xl font-bold text-primary">{title.charAt(0)}</span>
+            </div>
+            <div className="text-xs text-muted-foreground uppercase tracking-wider font-semibold">
+              {title.includes('AI') || title.includes('Grok') || title.includes('Claude') || title.includes('Perplexity') || title.includes('Gemini') ? 'AI Tool' : 
+               title.includes('Studio') || title.includes('CLI') ? 'Developer Platform' : 'Service'}
+            </div>
+          </div>
+          <div className="absolute top-2 right-2">
+            <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+          </div>
+        </div>
       <CardContent className="p-6">
         <div className="flex items-center justify-between mb-3">
           <h3 className="text-xl font-bold text-foreground">{title}</h3>
@@ -457,7 +464,13 @@ const DevEcosystemDocs: React.FC = () => {
             ].map((section) => (
               <button
                 key={section.id}
-                onClick={() => setActiveSection(section.id)}
+                onClick={() => {
+                  setActiveSection(section.id);
+                  const element = document.getElementById(section.id);
+                  if (element) {
+                    element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                  }
+                }}
                 className={`whitespace-nowrap px-4 py-2 rounded-lg transition-all duration-200 ${
                   activeSection === section.id
                     ? 'bg-primary text-primary-foreground'
@@ -505,12 +518,19 @@ const DevEcosystemDocs: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {softwareTools.map((tool, index) => (
               <Card key={index} className="overflow-hidden border-border bg-card/50 backdrop-blur-sm hover:shadow-lg transition-all duration-300">
-                <div className="aspect-video overflow-hidden">
-                  <img 
-                    src={tool.image} 
-                    alt={tool.title} 
-                    className="w-full h-full object-cover transition-transform duration-300 hover:scale-105" 
-                  />
+                <div className="aspect-video overflow-hidden bg-gradient-to-br from-secondary/10 to-accent/20 flex items-center justify-center relative">
+                  <div className="text-center p-6">
+                    <div className="w-16 h-16 mx-auto mb-4 bg-secondary/20 rounded-2xl flex items-center justify-center">
+                      <span className="text-2xl font-bold text-secondary-foreground">{tool.title.charAt(0)}</span>
+                    </div>
+                    <div className="text-xs text-muted-foreground uppercase tracking-wider font-semibold">
+                      {tool.title.includes('Code') || tool.title.includes('Terminal') ? 'Development' : 
+                       tool.title.includes('Docker') || tool.title.includes('Kubernetes') ? 'DevOps' : 'Utility'}
+                    </div>
+                  </div>
+                  <div className="absolute top-2 right-2">
+                    <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
+                  </div>
                 </div>
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between mb-3">
@@ -544,12 +564,21 @@ const DevEcosystemDocs: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {techStack.map((tech, index) => (
               <Card key={index} className="overflow-hidden border-border bg-card/50 backdrop-blur-sm hover:shadow-lg transition-all duration-300">
-                <div className="aspect-video overflow-hidden">
-                  <img 
-                    src={tech.image} 
-                    alt={tech.title} 
-                    className="w-full h-full object-cover transition-transform duration-300 hover:scale-105" 
-                  />
+                <div className="aspect-video overflow-hidden bg-gradient-to-br from-accent/10 to-primary/20 flex items-center justify-center relative">
+                  <div className="text-center p-6">
+                    <div className="w-16 h-16 mx-auto mb-4 bg-accent/20 rounded-2xl flex items-center justify-center">
+                      <span className="text-2xl font-bold text-accent-foreground">{tech.title.charAt(0)}</span>
+                    </div>
+                    <div className="text-xs text-muted-foreground uppercase tracking-wider font-semibold">
+                      {tech.title.includes('Supabase') || tech.title.includes('ClickHouse') || tech.title.includes('Redis') ? 'Database' : 
+                       tech.title.includes('AWS') || tech.title.includes('Cloud') ? 'Cloud Platform' : 
+                       tech.title.includes('Kafka') ? 'Streaming' : 
+                       tech.title.includes('Kubernetes') ? 'Orchestration' : 'Architecture'}
+                    </div>
+                  </div>
+                  <div className="absolute top-2 right-2">
+                    <div className="w-2 h-2 bg-orange-500 rounded-full animate-pulse"></div>
+                  </div>
                 </div>
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between mb-3">
@@ -585,12 +614,17 @@ const DevEcosystemDocs: React.FC = () => {
             <Card className="overflow-hidden border-border bg-card/50">
               <CardContent className="p-6">
                 <h3 className="text-xl font-bold mb-4 text-center text-foreground">Архитектурная диаграмма (C4 Model)</h3>
-                <div className="aspect-video overflow-hidden rounded-lg">
-                  <img 
-                    src={C4ContextDiagram} 
-                    alt="C4 Context Diagram - MetrikCollector Architecture" 
-                    className="w-full h-full object-cover shadow-lg"
-                  />
+                <div className="aspect-video overflow-hidden rounded-lg bg-gradient-to-br from-primary/5 to-secondary/10 flex items-center justify-center relative border-2 border-dashed border-border">
+                  <div className="text-center p-8">
+                    <div className="w-20 h-20 mx-auto mb-4 bg-primary/10 rounded-3xl flex items-center justify-center">
+                      <span className="text-3xl font-bold text-primary">C4</span>
+                    </div>
+                    <h4 className="text-lg font-semibold text-foreground mb-2">MetrikCollector Architecture</h4>
+                    <p className="text-sm text-muted-foreground">Node.js → Kafka → ClickHouse/PostgreSQL → Kubernetes</p>
+                  </div>
+                  <div className="absolute top-4 right-4">
+                    <div className="px-2 py-1 bg-primary/20 rounded text-xs text-primary font-semibold">Live System</div>
+                  </div>
                 </div>
               </CardContent>
             </Card>
